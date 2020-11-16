@@ -1,0 +1,14 @@
+{
+  println
+  print "hello"
+  println
+  {
+    print "world"
+    println
+  }
+  println "hello"
+  {
+    println "world"
+  }
+}
+println

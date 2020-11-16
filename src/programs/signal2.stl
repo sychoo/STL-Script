@@ -1,0 +1,65 @@
+
+val signal = ${
+        "0" : {
+                "content": {
+                        "ego": {
+                                "param": 5
+                        },
+
+                        "enemy": {
+                                "param": 6
+                        }
+
+                }
+        },
+
+        "1": {
+                "content": {
+                        "ego": {
+                                "param": 7
+                        },
+
+                        "enemy": {
+                                "param": 8
+                        }
+
+                }
+        },
+
+        "2": {
+                "content": {
+                        "ego": {
+                                "param": 10
+                        },
+
+                        "enemy": {
+                                "param": 11
+                        }
+                }
+        },
+
+        "3": {
+                "content": {
+                        "ego": {
+                                "param": 16
+                        },
+
+                        "enemy": {
+                                "param": 15
+                        }
+                }
+        }
+}$
+
+// condition $ego.param > 10 holds on time 0 starting on signal time = 3
+println G[0, 0]($ego.param < $enemy.param)(0, signal) // true
+println G[0, 0]($ego.param < $enemy.param)(1, signal) // true
+println G[0, 0]($ego.param < $enemy.param)(2, signal) // true
+println G[0, 0]($ego.param < $enemy.param)(3, signal) // false
+
+println G[0, 0]($ego.param > 10)(3, signal) // true
+println G[1, 3]($ego.param < $enemy.param)(0, signal) // true
+
+val signal_1 = ${"0": {"content": {"param" : 5}}, "1": {"content": {"param": 7}}, "2": {"content": {"param": 9}}}$; println G[0, 0]($param == 7)(1, signal_1);
+
+// get better error messages
