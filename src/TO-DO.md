@@ -111,3 +111,5 @@ DONT" todo: Preprocessing - get rid of all separators around block statement
 {
         print "hello world"
 }
+
+better error messages (with the location of the token)

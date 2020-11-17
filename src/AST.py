@@ -21,7 +21,8 @@ from stmt import\
     Var_Decl_Stmt,\
     Assign_Stmt,\
     Print_Stmt,\
-    Block_Stmt
+    Block_Stmt,\
+    While_Stmt
 
 
 from expr import\

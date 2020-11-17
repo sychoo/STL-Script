@@ -5,7 +5,9 @@
 # Program to define the parser
 
 from rply import ParserGenerator
+
 import AST
+import val_types
 
 from lexer import Lexer
 from sys import argv
@@ -56,10 +58,11 @@ class Parser:
             "NOT_EQUAL",
 
             # program control structure
-            # "WHILE",
-            # "FOR",
-            # "IF",
-            # "ELSE",
+            "WHILE",
+            "FOR",
+            "IF",
+            "ELSE",
+            "ELSE_IF",
 
             # print/display operator
             "PRINTLN",
@@ -166,14 +169,21 @@ class Parser:
             """parse block of statement list"""
             return AST.Block_Stmt(s[2])
 
+        @pg.production("stmt : block_stmt")
+        def block_stmt_as_stmt(s):
+            return s[0]
 
         # the block's separator is optional (since curly brackets is more than enough to separate statements)
-        @pg.production("stmt : block separator")
-        @pg.production("stmt : block")
-        def stmt_list_block(s):
+        @pg.production("block_stmt : block separator")
+        @pg.production("block_stmt : block")
+        def block_stmt(s):
             """parse block of statement list"""
             return s[0]
 
+        # typed val declaration (type inference)
+        @pg.production("stmt : WHILE expr block_stmt")
+        def untyped_var_decl_stmt(s):
+            return AST.While_Stmt(s[1], s[2])
 
         # typed val declaration (type inference)
         @pg.production("stmt : VAL_DECL val EQUAL expr separator")
@@ -189,13 +199,13 @@ class Parser:
         
 
         # typed val declaration
-        @pg.production("stmt : VAL_DECL val COLON expr EQUAL expr separator")
+        @pg.production("stmt : VAL_DECL val COLON type_expr EQUAL expr separator")
         def typed_val_decl_stmt(s):
             return AST.Val_Decl_Stmt(s[0].gettokentype(), s[1], s[3], s[5])
 
 
         # typed var declaration
-        @pg.production("stmt : VAR_DECL val COLON expr EQUAL expr separator")
+        @pg.production("stmt : VAR_DECL val COLON type_expr EQUAL expr separator")
         def typed_val_decl_stmt(s):
             return AST.Var_Decl_Stmt(s[0].gettokentype(), s[1], s[3], s[5])
 
@@ -302,9 +312,9 @@ class Parser:
             """parse single value expression, simply return the """
             return s[0]
 
-        # @pg.production("type_expr: IDENTIFIER")
-        # def primitive_type_expr(s):
-        #     return s[0]
+        @pg.production("type_expr : IDENTIFIER")
+        def primitive_type_expr(s):
+            return val_types.Type_Selector.select(s[0].getstr())
 
         @pg.production("val : INT")
         def int_val(s):

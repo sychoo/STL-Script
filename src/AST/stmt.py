@@ -8,6 +8,8 @@ path.append("..") # Adds higher directory to python modules path.
 from tools import String_Builder
 
 from core_AST import Stmt
+from val import Boolean_Val
+import exceptions
 
 class Block_Stmt(Stmt):
     def __init__(self, stmt_list):
@@ -54,7 +56,15 @@ class Val_Decl_Stmt(Variable_Decl_Stmt):
     # do not allow re-assignment for val declaration
 
     def typecheck(self, type_context):
-        pass
+        self.rhs_expr_type = self.rhs_expr.typecheck(type_context)
+
+        # print(self.rhs_expr_type)
+        # print(type(self.rhs_expr_type))
+
+        type_context.add(self.var_id_val, self.rhs_expr_type)
+
+        # print(type_context)
+        # print("lookup: " + str(type_context.lookup(self.var_id_val)))
 
     def eval(self, eval_context):
         # add val_decl attribute
@@ -66,7 +76,9 @@ class Val_Decl_Stmt(Variable_Decl_Stmt):
 class Var_Decl_Stmt(Variable_Decl_Stmt):
 
     def typecheck(self, type_context):
-        pass
+        self.rhs_expr_type = self.rhs_expr.typecheck(type_context)
+        type_context.add(self.var_id_val, self.rhs_expr_type)
+
 
     def eval(self, eval_context):
         # add var_decl attribute
@@ -74,6 +86,31 @@ class Var_Decl_Stmt(Variable_Decl_Stmt):
         eval_context.add(self.var_id_val, self.rhs_expr)
 
 
+class While_Stmt(Stmt):
+
+    def __init__(self, condition_expr, body_block):
+        self.condition_expr = condition_expr
+        self.body_block = body_block
+
+    def typecheck(self, type_context):
+        self.condition_expr.typecheck(type_context)
+        self.body_block.typecheck(type_context)
+
+    def eval(self, eval_context):
+        # test whether if the lhs id_expr is assignable (using the context) before the assignment
+        # val cannot be reassigned
+        while self.condition_expr.eval(eval_context) != Boolean_Val("false"):
+            self.body_block.eval(eval_context)
+
+    def __str__(self):
+        sb = String_Builder()
+        sb.append("While_Stmt: ( ")
+        sb.append(str(self.condition_expr))
+        sb.append(" ) { ")
+        sb.append(str(self.body_block))
+        sb.append(" }")
+
+        return str(sb)
 
 class Assign_Stmt(Stmt):
 
@@ -82,8 +119,15 @@ class Assign_Stmt(Stmt):
         self.rhs_expr = rhs_expr
 
     def typecheck(self, type_context):
-        pass
+        # bi-directional type check
+        self.lhs_expr_type = type_context.lookup(self.var_id_expr)
+        self.rhs_expr_type = self.rhs_expr.typecheck(type_context)
 
+        if self.lhs_expr_type != self.rhs_expr_type:
+            raise exceptions.Type_Error("Type Mismatch in Assignment Stmt: lhs type = " + str(self.lhs_expr_type) + " rhs type = " + str(self.rhs_expr_type))
+
+        # Note that assignment statement do not return result for the typecheck
+        
     def eval(self, eval_context):
         # test whether if the lhs id_expr is assignable (using the context) before the assignment
         # val cannot be reassigned
