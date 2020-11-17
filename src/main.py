@@ -14,6 +14,9 @@
 # termcolor.COLORS gives you a list of colours
 from termcolor import colored
 
+# for tracing error messages
+import traceback
+
 # import the tools
 from tools import Tools
 
@@ -79,8 +82,9 @@ class Interpreter:
         """enter REPL (read-eval-print loop)"""
 
         # print header information
-        stdout.write("STL Interpreter " + INTERPRETER_VERSION + "\n")
-        stdout.write("Designed with ❤️  by Simon Chu\n")
+        stdout.write("STL Interpreter v" + INTERPRETER_VERSION + "\n")
+        # stdout.write("Designed with ❤️  by Simon Chu\n")
+        stdout.write("Designed by Simon Chu\n")
         stdout.write("Copyright © 2020 Carnegie Mellon University. All rights reserved.\n")
 
         # handle the case when user clicks Ctrl-C or SIGINT
@@ -210,8 +214,12 @@ class Interpreter:
 
                 
             except Exception as e:
-                print(e)
-                return False
+                # debugger, print all stack trace during REPL
+                tb = traceback.format_exc()
+                print(tb)
+                # raise RuntimeError("Interpreter Error")
+                # print(e)
+                # return False
 
         return False
 

@@ -160,16 +160,19 @@ class Binary_Logic_Expr(Binary_Expr):
     """stores binary logic operation expressions AST"""
 
     def typecheck(self, type_context):
+        # make sure lhs and rhs are of consistent types
+        # return the common type information
+        
         pass
 
     def eval(self, eval_context):
         """support short-circuit evaluation? sure but under the premise that the type must be the same"""
+        # initialize result to None
+        result = None
 
         # evaluate both left and right side expressions
         self.lhs_expr = self.lhs_expr.eval(eval_context)
         self.rhs_expr = self.rhs_expr.eval(eval_context)
-
-        result = None
 
         if self.op_type == "LOGICAL_AND":
             result = self.lhs_expr.logical_and(self.rhs_expr)
@@ -190,13 +193,37 @@ class Binary_Arith_Expr(Binary_Expr):
     """stores binary logic operation expressions AST"""
 
     def typecheck(self, type_context):
-        pass
+        # intialize result to None
+        result = None
+
+        # print("lhs original : " + str(type(self.lhs_expr)))
+        # print("rhs original : " + str(type(self.rhs_expr)))
+
+        # the type on both sides of the operator must be the same
+        # print(type_context)
+        self.lhs_expr_type = self.lhs_expr.typecheck(type_context)
+        self.rhs_expr_type = self.rhs_expr.typecheck(type_context)
+
+        # print("lhs typechecked : " + str(type(self.lhs_expr_type)))
+        # print("rhs typechecked : " + str(type(self.rhs_expr_type)))
+        # print("true? " + str(self.lhs_expr_type != self.rhs_expr_type))
+
+        if self.lhs_expr_type != self.rhs_expr_type:
+            raise exceptions.Type_Error("Type Mismatch in Binary Arithmetic Expression: lhs type = " + str(self.lhs_expr_type) + " rhs type = " + str(self.rhs_expr_type))
+
+        else:
+            # when the type is consistent
+            result = self.lhs_expr_type
+
+        return result
 
     def eval(self, eval_context):
         # evaluate both left and right side expressions
         self.lhs_expr = self.lhs_expr.eval(eval_context)
         self.rhs_expr = self.rhs_expr.eval(eval_context)
 
+        # print("lhs : " + str(type(self.lhs_expr)))
+        # print("rhs : " + str(type(self.rhs_expr)))
         result = None
 
         if self.op_type == "PLUS":
@@ -210,6 +237,7 @@ class Binary_Arith_Expr(Binary_Expr):
         else:
             raise exceptions.Operator_Not_Found_Error("Operator \""  + str(self.op_type) + "\" for Binary Comparison Expression is invalid.")
         
+        # the result is wrapped by primitive object
         return result
 
 
@@ -217,7 +245,8 @@ class Unary_Arith_Expr(Unary_Expr):
     """stores binary logic operation expressions AST"""
 
     def typecheck(self, type_context):
-        pass
+        result = self.rhs_expr.typecheck(type_context)
+        return result
 
     def eval(self, eval_context):
         # evaluate both left and right side expressions

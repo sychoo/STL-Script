@@ -31,7 +31,9 @@ class Primitive_Val(Val):
         return result 
     
     def __ne__(self, rhs):
+        # debug
         # this check is necessary because the program seems to pass None sometimes for rhs
+        # print(str(rhs) + str(type(rhs)))
         if rhs != None:
 
             # greater or equal to
@@ -43,7 +45,8 @@ class Primitive_Val(Val):
                 result = Boolean_Val("false")
 
         else:
-            result = Boolean_Val("false")
+            # if rhs is None, return true since they are not equal
+            result = Boolean_Val("true")
         
         return result
     
@@ -309,8 +312,10 @@ class Id_Val(Val):
 
     
     def typecheck(self, type_context):
-        pass
-
+        result = type_context.lookup(self)
+        # print(result)
+        # print(type(result))
+        return result
 
 
 class Meta_Id_Val(Val):

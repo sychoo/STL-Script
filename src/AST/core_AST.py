@@ -9,7 +9,7 @@ from sys import stdout, path
 path.append("..") # Adds higher directory to python modules path.
 
 from tools import String_Builder
-
+import val_types
 
 import exceptions
 
@@ -113,7 +113,7 @@ class Type_Context:
 
     @staticmethod
     def get_empty_context():
-        return Eval_Context()
+        return Type_Context()
 
     def get_current_context_var_id(self):
         # get a list of variable identifier (in string) in the current context
@@ -174,7 +174,6 @@ class Stmt_List(Node):
 
     def typecheck(self, type_context):
         for stmt in self.stmts:
-            # print(type(stmt))
             stmt.typecheck(type_context)
 
     def eval(self, eval_context):
@@ -226,7 +225,7 @@ class Val(Expr):
         return self
 
     def typecheck(self, type_context):
-        return self.value_type
+        return val_types.Type_Selector.select(self.value_type)
 
 
 # /top-level classes

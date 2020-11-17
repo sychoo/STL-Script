@@ -1,0 +1,2 @@
+val i = 1
+println i + 1.0

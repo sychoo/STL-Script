@@ -103,10 +103,12 @@ class Lexer:
         lg.add("LOGICAL_NOT", r"\!")
 
         # program control structure
-        # lg.add("WHILE", r"while")
-        # lg.add("FOR", r"for")
-        # lg.add("IF", r"if")
-        # lg.add("ELSE", r"else")
+        lg.add("WHILE", r"while")
+        lg.add("FOR", r"for")
+        lg.add("IF", r"if")
+        lg.add("ELSE_IF", r"else\ if")
+        lg.add("ELSE", r"else")
+   
 
         # print/display operator
         lg.add("PRINTLN", r"println")
