@@ -100,6 +100,7 @@ class G_STL_Expr(Unary_STL_Expr):
 
         # print("signal val type: " + str(type(self.signal_val)))
 
+        # cheat
         # convert both time to Python Int object
         self.begin_expr_int = self.begin_expr.to_py_obj()
         self.end_expr_int = self.end_expr.to_py_obj()

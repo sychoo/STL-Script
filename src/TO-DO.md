@@ -113,3 +113,17 @@ DONT" todo: Preprocessing - get rid of all separators around block statement
 }
 
 better error messages (with the location of the token)
+
+
+Support API (when embedding the interpreter in a Python/C program)
+
+isntallation documentation
+
+add probablistic support
+
+Prevent redefinition
+
+
+# TODO: support type declaration like List<String>
+        # create Type_Decl object, gradually convert it to the corresponding typing object
+        # i.e. List<String> -> Transform to List_Type(String_Type()) -> achieve parametric type

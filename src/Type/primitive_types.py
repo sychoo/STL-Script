@@ -19,3 +19,12 @@ class String_Type(Primitive_Type):
 class STL_Type(Primitive_Type):
     def __init__(self):
         super(STL_Type, self).__init__("STL")
+
+class List_Type(Primitive_Type):
+    def __init__(self, parametric_type):
+        super(List_Type, self).__init__("LIST")
+        self.parametric_type = parametric_type
+
+class Tuple_Type(Primitive_Type):
+    def __init__(self):
+        super(Tuple_Type, self).__init__("TUPLE")

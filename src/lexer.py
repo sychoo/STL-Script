@@ -165,6 +165,7 @@ class Lexer:
 
         lg.add("META_IDENTIFIER", r"\$[a-zA-Z_][a-zA-Z0-9_.]*")
         
+        lg.add("DOT", r".")
         # build the lexer
         self.lexer = lg.build()
 

@@ -176,6 +176,18 @@ false
         self.assertEqual(decoded_actual_output, expected_output)
 
 
+    def test_primitive_list_tuple_with_file(self):
+        """run program file by shell command, highly depends on interp command"""
+        test_file = test_file_path("list_tuple.stl")
+        actual_output = subprocess.check_output("python3 main.py " + test_file, shell=True)
+
+        expected_output = "" # no output is needed in this case
+        
+        # decode the output to string (byte -> string)
+        decoded_actual_output = actual_output.decode()
+        self.assertEqual(decoded_actual_output, expected_output)
+
+
 
     def test_val_var_decl_assign_with_file(self):
         """run program file by shell command, highly depends on interp command"""

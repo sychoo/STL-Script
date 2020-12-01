@@ -49,7 +49,13 @@ from val import\
     String_Val,\
     Boolean_Val,\
     Id_Val,\
-    Meta_Id_Val
+    Meta_Id_Val,\
+    List_Val,\
+    Tuple_Val
 
 from signal_val import\
     Signal_Val
+
+from structure import\
+    Invocation,\
+    Expr_List

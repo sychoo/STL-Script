@@ -5,8 +5,8 @@ from sys import stdout, path
 path.append("..") # Adds higher directory to python modules path.
 
 from tools import String_Builder, Tools
-
 from core_AST import Val
+from val_types import List_Type
 
 # val implementation
 
@@ -399,4 +399,51 @@ class Meta_Id_Val(Val):
 
     
     def typecheck(self, type_context):
+        # do not require type check, simply pass
         pass
+
+
+class List_Val(Primitive_Val):
+
+    def __init__(self, expr_list, value_type="LIST"):
+        """take the identifier name of the variable"""
+        self.expr_list = expr_list
+        self.value_type = value_type
+
+    def __str__(self):
+        sb = String_Builder()
+        sb.append("List_Val: ( ")
+        sb.append(str(self.expr_list))
+        sb.append(" )")
+
+        return str(sb)
+
+    def eval(self, eval_context):
+        return self
+    
+    def typecheck(self, type_context):
+        # type check happens in expr list to ensure homogeneous types
+        common_type = self.expr_list.typecheck(type_context, "list")
+        return List_Type(common_type)
+
+class Tuple_Val(Primitive_Val):
+
+    def __init__(self, expr_list, value_type="TUPLE"):
+        """take the identifier name of the variable"""
+        self.expr_list = expr_list
+        self.value_type = value_type
+
+    def __str__(self):
+        sb = String_Builder()
+        sb.append("Tuple_Val: ( ")
+        sb.append(str(self.expr_list))
+        sb.append(" )")
+
+        return str(sb)
+
+    def eval(self, eval_context):
+        return self
+    
+    def typecheck(self, type_context):
+        # type check happens in expr list to ensure type correctness in tuple
+        self.expr_list.typecheck(type_context, "tuple")

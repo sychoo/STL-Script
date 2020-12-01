@@ -111,6 +111,7 @@ class Parser:
             "META_IDENTIFIER",
             # identifiers (variable identifiers/type identifiers)
             "IDENTIFIER",
+            "DOT",
             ],
 
 
@@ -126,6 +127,7 @@ class Parser:
                 ('left', ['LOGICAL_NOT']),
                 ('left', ['LOGICAL_AND']),
                 ('left', ['LOGICAL_OR']),
+                ('left', ["LOGICAL_IMPLIES"]),
                 ('right', ['EQUAL']),
                 ('nonassoc', ['PRINT', 'PRINTLN']) # non-associative
             ])
@@ -182,7 +184,7 @@ class Parser:
 
         # typed val declaration (type inference)
         @pg.production("stmt : WHILE expr block_stmt")
-        def untyped_var_decl_stmt(s):
+        def while_stmt(s):
             return AST.While_Stmt(s[1], s[2])
 
         # typed val declaration (type inference)
@@ -277,7 +279,7 @@ class Parser:
             """handles binary logic expressions"""
             return AST.Binary_Arith_Expr(s[1].getstr(), s[1].gettokentype(), s[0], s[2])
 
-        # G[1, 10](condition)(t, <signal>)
+        # G[1, 10](condition)(t, <signal_var>)
         @pg.production("expr : IDENTIFIER L_SQ_BRACE expr COMMA expr R_SQ_BRACE L_PAREN expr R_PAREN L_PAREN expr COMMA val R_PAREN")        
         def unary_STL_expr_1(s):
             """handles unary STL expressions (G: Globally, F: Eventually)"""
@@ -306,12 +308,20 @@ class Parser:
             """handler binary STL expressions"""
             return AST.Binary_STL_Expr(s[3].getstr(), s[5], s[7], s[1], s[10], s[13], s[15])
 
+        # function invocation
+        @pg.production("expr : expr DOT IDENTIFIER L_PAREN R_PAREN")
+        def function_invocation(s):
+            """invoke specific function of a data structure"""
+            return AST.Invocation(s[0], s[2].getstr())
 
         @pg.production("expr : val")
         def single_val_expr(s):
             """parse single value expression, simply return the """
             return s[0]
 
+        # TODO: support type declaration like List<String>
+        # create Type_Decl object, gradually convert it to the corresponding typing object
+        # i.e. List<String> -> Transform to List_Type(String_Type()) -> achieve parametric type
         @pg.production("type_expr : IDENTIFIER")
         def primitive_type_expr(s):
             return val_types.Type_Selector.select(s[0].getstr())
@@ -344,6 +354,42 @@ class Parser:
             """parse Float values"""
             return AST.Signal_Val(s[0].getstr(), None, s[0].gettokentype())
 
+        @pg.production("val : list")
+        def list_val(s):
+            """parse list values"""
+            return s[0]
+
+        @pg.production("val : tuple")
+        def tuple_val(s):
+            """parse tuple values"""
+            return s[0]
+        
+
+        # parse list (have to be homogeneous type)
+        @pg.production("list : L_SQ_BRACE expr_list R_SQ_BRACE")
+        def extract_list_val(s):
+            """parse list values"""
+            return AST.List_Val(s[1])
+
+        # parse tuple (doesn't have to be homogeneous type)
+        @pg.production("tuple : L_PAREN expr_list R_PAREN")
+        def extract_tuple_val(s):
+            """parse tuple values"""
+            return AST.Tuple_Val(s[1])
+
+
+        @pg.production("expr_list : expr_list COMMA expr")
+        def mutiple_expr_list(s):
+            """parse list values, handle expr list in the beginning or the middle"""
+            # return AST.List_Val(s[0].get_expr_list, None, s[0].gettokentype())
+            return AST.Expr_List(s[0].get_expr_list() + [s[2]])
+        
+        @pg.production("expr_list : expr")
+        def single_expr_list(s):
+            """parse list values, handle expr list in the end"""
+            return AST.Expr_List([s[0]])
+
+        
         # @pg.production("r_brace_as_separator : R_BRACE")
         # @pg.production("r_brace_as_separator : R_BRACE separator")
         # def r_brace_as_separator(s):

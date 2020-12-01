@@ -1,0 +1,2 @@
+val i: String = "hello"
+println i

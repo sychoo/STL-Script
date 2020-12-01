@@ -1,0 +1,5 @@
+val list = [1, 2, 3, 4]
+val list2 = ["hello, ", "world!"]
+
+val tuple = (1, 2, 3, "hello")
+val tuple = (4, 5, 6, "world!", 3.1415926, 5 + 6)

@@ -1,0 +1,116 @@
+\documentclass[titlepage]{article}
+% \usepackage{fullpage}
+% \usepackage{letterpaper, landscape, margin=2in}
+\usepackage{color,soul}
+\usepackage{graphicx, graphics}
+\usepackage{enumitem}
+\usepackage{enumerate}
+
+\begin{document}
+
+\title{\huge STL Script Documentation\\[1ex] \LARGE A domain-specifc programming language to specify and evaluate Signal Temporal Logic formulae.}
+\author{
+{\Large\textbf{Contributor(s)}}\\[3ex]
+% Member 1\\[1ex] Member 2\\[1ex] Member 3\\[1ex] Member 4}
+\Large Simon Chu\\[1ex]}
+% \date{\today} % make the date as today's date
+\date{December 1, 2020}
+
+\maketitle
+
+
+\section{Motivation}
+
+\noindent{Signal temporal logic (STL) is a temporal logic formalism for specifying properties of continuous signals. It is widely used for analyzing programs in cyber-physical systems (CPS) that interact with physical entities exhibiting continous dynamics.}
+\medskip
+
+\noindent{However, neither the industry nor academia has agreed upon a common
+standard of STL, and the non-standardized technique has bring about the
+discrepancies in analyzing system properties, and resulting in the industry and
+academia spending a tremendous amount of effort implementing ad hoc/specialized
+APIs that are tailored to specific use cases, cannot communicate with each other,
+requires steep learning curve for new personnel that just got involved in the
+project, and causing inefficiencies when trying to apply the same reasoning
+techniques across projects.}
+\medskip
+
+\noindent{A programming language is a bicycle for the mind. By standardizing STL
+using a programming language, it effectively support collaboration across
+projects and disciplines, effectively reduce the overhead for training new
+personnel, and developing ad hoc tools for each project, which allows developer
+to focus on reasoning about the STL specifications instead of its implementation
+and verification.}
+\medskip
+
+\noindent{I will introduce the concrete syntax and semantics of the language in
+the following sections.}
+
+\section{Hello, World! in STL Script}
+\begin{verbatim}
+    println "Hello, World!"
+\end{verbatim}
+
+\noindent{\texttt{println} is a built-in function in STL Script. It will print whatever expression is behind and append a \verb|\n| character at the end of the expression to create a newline afterwards. \texttt{"Hello, World!"} is a string, which is one of the primitive types in the language.}
+
+\section{Preliminaries}
+
+\subsection{Primitive Types}
+
+\noindent{STL Script is a statically-typed language, it supports both implicit or explicit typing, and it has the following primitive types built into the language:}
+\begin{itemize}
+    \item Int
+    \item Float
+    \item String
+    \item Boolean
+    \item List
+    \item Tuple
+    \item STL
+\end{itemize}
+
+\noindent{Most of the primitive types are similar to those in programming languages like Scala or Java. Note that \texttt{List} is a parametric type. It can accept another primitive
+type as an argument. For example, \texttt{List<Int>} indicates a \texttt{List}
+consists of Integers (of \texttt{Int} Type). \texttt{STL} type is assigned to
+STL formulas.}
+
+\subsection{Values, Expressions and Statements}
+
+\subsubsection{Values}
+
+\noindent{Values are language components that cannot be evaluated any further.
+They are the building block for Expressions. Instances of Values can be \texttt{3.1415926}, \texttt{42}, $\cdots$}
+
+\subsubsection{Expressions}
+
+\noindent{Expressions are all language components that can be evaluated to a
+value, and does not have any side effects (i.e. assignment to a variable, or
+write to standard output or file streams, etc). They are the building block for Statements.}
+
+\medskip
+
+\noindent{Instances of Expressions can be \texttt{1+1}, \texttt{true||false}, $\cdots$}
+
+\subsubsection{Statements}
+
+\noindent{Statements are all language components that perform certain actions,
+and may exhibit side effects. They typically consist of Expressions, and they are followed by separators like  \verb|;| or \verb|\n| (or both) characters.}
+
+\medskip
+
+\noindent{Instances of Statements can be \texttt{val i = 3;} \quad \texttt{println "Hello, World!"; }}
+
+\subsection{Function Invocation}
+\noindent{Function can be invoked on expressions. The invocation is initiated by \textbf{.} (dot). For example, in the following assignment statement of STL formula:}
+\begin{verbatim}
+    val property = G[0,1]($distance_to_boundary > 5.0)(0, signal)
+\end{verbatim}
+
+\noindent{Note that the signal in our case can be any arbitrary signal (we will discuss this later). We can evaluate the satisfaction of the STL formula by invoking the \texttt{eval()} function on the property variable like the following:}
+
+\begin{verbatim}
+    property.eval()
+\end{verbatim}
+
+\noindent{This will evaluate the STL formula to a \texttt{Boolean} value \texttt{true} or \texttt{false}. The invocation itself is a expression.}
+
+\section{STL Specification}
+\end{document}

@@ -12,7 +12,9 @@ from primitive_types import\
     Boolean_Type,\
     Float_Type,\
     String_Type,\
-    STL_Type
+    STL_Type,\
+    List_Type,\
+    Tuple_Type
 
 class Type_Selector:
     @staticmethod
@@ -33,7 +35,13 @@ class Type_Selector:
 
         elif type_str == "STL":
             return STL_Type()
-            
+        
+        # elif type_str == "LIST":
+        #     return List_Type()
+        
+        elif type_str == "TUPLE":
+            return Tuple_Type()
+
         # case when the type string passed in is not a pre-defined primitive type
         else:
             return Custom_Type(type_str)
