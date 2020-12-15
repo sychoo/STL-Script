@@ -1,4 +1,7 @@
-from core_types import Primitive_Type
+# Last Modified: 2020-12-15 17:32:51 EDT
+# Simon Chu
+
+from src.Type.core_types import Primitive_Type
 
 class Int_Type(Primitive_Type):
     def __init__(self):

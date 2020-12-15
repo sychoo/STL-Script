@@ -1,12 +1,12 @@
 # Mon 2020-11-02 14:55:14
 
 import abc
-from tools import String_Builder
+from src.tools import String_Builder
 from sys import stdout, path
 
-path.append("AST") # Adds higher directory to python modules path.
+# path.append("AST") # Adds higher directory to python modules path.
 
-from core_AST import\
+from src.AST_Collection.core_AST import\
     Eval_Context,\
     Type_Context,\
     Node,\
@@ -16,7 +16,7 @@ from core_AST import\
     STL_Expr,\
     Val
 
-from stmt import\
+from src.AST_Collection.stmt import\
     Val_Decl_Stmt,\
     Var_Decl_Stmt,\
     Assign_Stmt,\
@@ -25,7 +25,7 @@ from stmt import\
     While_Stmt
 
 
-from expr import\
+from src.AST_Collection.expr import\
     Binary_Expr,\
     Binary_Comp_Expr,\
     Binary_Logic_Expr,\
@@ -35,7 +35,7 @@ from expr import\
     Unary_Arith_Expr
 
 
-from STL_expr import\
+from src.AST_Collection.STL_expr import\
     Unary_STL_Expr,\
     Binary_STL_Expr,\
     G_STL_Expr,\
@@ -43,7 +43,7 @@ from STL_expr import\
     X_STL_Expr
 
 
-from val import\
+from src.AST_Collection.val import\
     Int_Val,\
     Float_Val,\
     String_Val,\
@@ -53,9 +53,9 @@ from val import\
     List_Val,\
     Tuple_Val
 
-from signal_val import\
+from src.AST_Collection.signal_val import\
     Signal_Val
 
-from structure import\
+from src.AST_Collection.structure import\
     Invocation,\
     Expr_List

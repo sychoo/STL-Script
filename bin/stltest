@@ -1,0 +1,17 @@
+#!/bin/bash
+# initiate unit test module for STL
+
+# store the directory where user invoked the stl command
+exec_dir="$(pwd)"
+
+# go to the directory where the STL Script Interpreter is located
+cd $(dirname $0)/../
+
+# if [ $# -eq 0 ]; then
+    # no command-line arguments, REPL mode
+python3 -m src.unit_tests
+# else
+    # with 1 or more command-line arguments, program mode
+    # python3 -m src.unit_tests $exec_dir/$*
+# fi
+

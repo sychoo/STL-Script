@@ -1,13 +1,13 @@
 from sys import path
 
-path.append("Type")
+# path.append("Type")
 
-from core_types import\
+from src.Type.core_types import\
     Type,\
     Primitive_Type,\
     Custom_Type
 
-from primitive_types import\
+from src.Type.primitive_types import\
     Int_Type,\
     Boolean_Type,\
     Float_Type,\

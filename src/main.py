@@ -18,7 +18,7 @@ from termcolor import colored
 import traceback
 
 # import the tools
-from tools import Tools
+from src.tools import Tools
 
 # for command line arguments
 from sys import stdout, argv
@@ -32,9 +32,10 @@ import os
 # for gracefully terminate when Control-C happens
 from signal import signal, SIGINT
 
-from lexer import Lexer
-from parser import Parser
-import AST
+from src.lexer import Lexer
+from src.parser import Parser
+import src.AST_Collection.core_AST as AST
+# import src.parser as parser
 
 INTERPRETER_VERSION = "1.0.0"
 
@@ -226,6 +227,8 @@ class Interpreter:
     @staticmethod
     def interpret(raw_program_string):
         """start the interpretation of the program"""
+
+        # print(raw_program_string) # for debugging
 
         # create the Lexer
         lexer = Lexer()

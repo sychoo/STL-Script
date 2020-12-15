@@ -3,12 +3,12 @@
 # contains language constructs of the language
 
 from sys import stdout, path
-path.append("..") # Adds higher directory to python modules path.
+# path.append("..") # Adds higher directory to python modules path.
 
 
-from core_AST import Expr
+from src.AST_Collection.core_AST import Expr
 
-import exceptions
+import src.exceptions as exceptions
 
 class Invocation(Expr):
     """

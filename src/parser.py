@@ -6,14 +6,14 @@
 
 from rply import ParserGenerator
 
-import AST
-import val_types
+import src.AST as AST
+import src.val_types as val_types
 
-from lexer import Lexer
+from src.lexer import Lexer
 from sys import argv
-from tools import Tools
+from src.tools import Tools
 import os
-import exceptions
+import src.exceptions as exceptions
 
 class Eval_Context:
     @staticmethod

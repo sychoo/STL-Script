@@ -4,9 +4,9 @@
 from sys import stdout, path
 path.append("..") # Adds higher directory to python modules path.
 
-from tools import String_Builder, Tools
-from core_AST import Val
-from val_types import List_Type
+from src.tools import String_Builder, Tools
+from src.AST_Collection.core_AST import Val
+from src.val_types import List_Type
 
 # val implementation
 

@@ -12,7 +12,7 @@
 # https://rply.readthedocs.io/en/latest/
 from rply import LexerGenerator
 from sys import argv
-from tools import Tools
+from src.tools import Tools
 import os
 
 class Lexer:
