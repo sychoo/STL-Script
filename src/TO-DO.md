@@ -127,3 +127,9 @@ Prevent redefinition
 # TODO: support type declaration like List<String>
         # create Type_Decl object, gradually convert it to the corresponding typing object
         # i.e. List<String> -> Transform to List_Type(String_Type()) -> achieve parametric type
+
+
+Add Outer Context (scoping) (like mini-js)
+
+Add line mapping for better error messages (line #, column #)
+
