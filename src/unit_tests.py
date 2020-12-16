@@ -2,13 +2,13 @@
 
 # https://docs.python.org/2/library/unittest.html
 import unittest
-import tools
-import main
+import src.tools as tools
+import src.main as main
 import sys
-import AST
+import src.AST as AST
 
-sys.path.append("AST")
-import exceptions # AST/exceptions.py
+# sys.path.append("AST")
+import src.exceptions as exceptions # AST/exceptions.py
 
 import subprocess
 
@@ -18,7 +18,7 @@ import subprocess
 # for capturing standard output
 # from IPython.utils.capture import capture_output
 
-TEST_DIR = "test_suite/"
+TEST_DIR = "src/test_suite/"
 
 def test_file_path(test_file):
     """function obtain the file path"""
@@ -128,7 +128,7 @@ class Program_Tests(unittest.TestCase):
     def test_block_statement_with_file(self):
         """run program file by shell command, highly depends on interp command"""
         test_file = test_file_path("block.stl")
-        actual_output = subprocess.check_output("python3 main.py " + test_file, shell=True)
+        actual_output = subprocess.check_output("stl " + test_file, shell=True)
         expected_output = """
 hello
 world
@@ -146,7 +146,7 @@ world
     def test_signal_and_STL_expr_with_file(self):
         """run program file by shell command, highly depends on interp command"""
         test_file = test_file_path("signal.stl")
-        actual_output = subprocess.check_output("python3 main.py " + test_file, shell=True)
+        actual_output = subprocess.check_output("stl " + test_file, shell=True)
         expected_output = """true
 false
 true
@@ -164,7 +164,7 @@ false
     def test_unary_arith_op_with_file(self):
         """run program file by shell command, highly depends on interp command"""
         test_file = test_file_path("unary_arith_op.stl")
-        actual_output = subprocess.check_output("python3 main.py " + test_file, shell=True)
+        actual_output = subprocess.check_output("stl " + test_file, shell=True)
         expected_output = """-1
 -1.0
 10
@@ -179,7 +179,7 @@ false
     def test_primitive_list_tuple_with_file(self):
         """run program file by shell command, highly depends on interp command"""
         test_file = test_file_path("list_tuple.stl")
-        actual_output = subprocess.check_output("python3 main.py " + test_file, shell=True)
+        actual_output = subprocess.check_output("stl " + test_file, shell=True)
 
         expected_output = "" # no output is needed in this case
         
@@ -192,7 +192,7 @@ false
     def test_val_var_decl_assign_with_file(self):
         """run program file by shell command, highly depends on interp command"""
         test_file = test_file_path("normal_assign.stl")
-        actual_output = subprocess.check_output("python3 main.py " + test_file, shell=True)
+        actual_output = subprocess.check_output("stl " + test_file, shell=True)
         expected_output = """10
 hello
 3.1415926
@@ -225,7 +225,7 @@ true
     def test_binary_operator_with_file(self):
         """run program file by shell command, highly depends on interp command"""
         test_file = test_file_path("bin_op.stl")
-        actual_output = subprocess.check_output("python3 main.py " + test_file, shell=True)
+        actual_output = subprocess.check_output("stl " + test_file, shell=True)
         expected_output = """----- INT -----
 2
 79
@@ -277,7 +277,7 @@ true
     def test_print_stmt_with_file(self):
         """run program file by shell command, highly depends on interp command"""
         test_file = test_file_path("print.stl")
-        actual_output = subprocess.check_output("python3 main.py " + test_file, shell=True)
+        actual_output = subprocess.check_output("stl " + test_file, shell=True)
         expected_output = """1
 1.0
 true
@@ -336,12 +336,12 @@ hello, world!
         # extract raw program string
         raw_program_string = tools.Tools.extract_raw_program_string(program)
 
-        # actual_output = subprocess.check_output('python3 -c  import main; main.Interpreter.interpret("""' + raw_program_string + '""");', shell=True)
+        # actual_output = subprocess.check_output('python3 -c  import src.main as main main.Interpreter.interpret("""' + raw_program_string + '""");', shell=True)
         #works
-        # actual_output = subprocess.check_output('python3 -c \'import main; main.Interpreter.interpret("""print "hello, world";""")\'', shell=True)
+        # actual_output = subprocess.check_output('python3 -c \'import src.main as main main.Interpreter.interpret("""print "hello, world";""")\'', shell=True)
 
-        actual_output = subprocess.check_output('python3 -c \'import main; main.Interpreter.interpret("""'+ raw_program_string + '""")\'', shell=True)
-        # python3 -c 'import main; main.Interpreter.interpret("""print "hello, world";""")'  
+        actual_output = subprocess.check_output('python3 -c \'import src.main as main; main.Interpreter.interpret("""'+ raw_program_string + '""")\'', shell=True)
+        # python3 -c 'import src.main as main main.Interpreter.interpret("""print "hello, world";""")'  
         expected_output = """1
 1.0
 true

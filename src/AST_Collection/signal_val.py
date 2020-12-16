@@ -2,9 +2,9 @@
 from sys import stdout, path
 path.append("..") # Adds higher directory to python modules path.
 
-from tools import String_Builder
-import exceptions
-from val import Val
+from src.tools import String_Builder
+import src.exceptions as exceptions
+from src.AST_Collection.val import Val
 import json
 
 # sample simplified signal
@@ -168,5 +168,5 @@ class Signal_Val(Val):
         new_dict.update({time_index : self.signal_dict[time_index]})
         return Signal_Val.get_new_signal_from_dict(new_dict)
         
-    def __str__(self):
-        return str(self.signal_dict)
+    # def __str__(self):
+    #     return str(self.signal_dict)

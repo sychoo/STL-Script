@@ -8,10 +8,10 @@ import abc
 from sys import stdout, path
 path.append("..") # Adds higher directory to python modules path.
 
-from tools import String_Builder
-import val_types
+from src.tools import String_Builder
+import src.val_types as val_types
 
-import exceptions
+import src.exceptions as exceptions
 
 class Eval_Context:
     """store evaluation context, specifically dictionary containing identifier name
