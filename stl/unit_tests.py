@@ -2,13 +2,14 @@
 
 # https://docs.python.org/2/library/unittest.html
 import unittest
-import src.tools as tools
-import src.main as main
+import stl.tools as tools
+import stl.main as main
 import sys
-import src.AST as AST
+import stl.AST as AST
+from stl.api.signal import Signal
 
 # sys.path.append("AST")
-import src.exceptions as exceptions # AST/exceptions.py
+import stl.exceptions as exceptions # AST/exceptions.py
 
 import subprocess
 
@@ -18,13 +19,18 @@ import subprocess
 # for capturing standard output
 # from IPython.utils.capture import capture_output
 
-TEST_DIR = "src/test_suite/"
+TEST_DIR = "stl/test_suite/"
 
 def test_file_path(test_file):
     """function obtain the file path"""
     return TEST_DIR + test_file
 
 class Test_Tools(unittest.TestCase):
+
+    # def test_signal_specification(self):
+    #     signal = Signal()
+    #     signal.add({"param": 10})
+
 
     def test_evaluation_context(self):
         ctx_1 = AST.Eval_Context.get_empty_context()
@@ -340,7 +346,7 @@ hello, world!
         #works
         # actual_output = subprocess.check_output('python3 -c \'import src.main as main main.Interpreter.interpret("""print "hello, world";""")\'', shell=True)
 
-        actual_output = subprocess.check_output('python3 -c \'import src.main as main; main.Interpreter.interpret("""'+ raw_program_string + '""")\'', shell=True)
+        actual_output = subprocess.check_output('python3 -c \'import stl.main as main; main.Interpreter.interpret("""'+ raw_program_string + '""")\'', shell=True)
         # python3 -c 'import src.main as main main.Interpreter.interpret("""print "hello, world";""")'  
         expected_output = """1
 1.0

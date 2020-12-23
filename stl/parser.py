@@ -6,14 +6,14 @@
 
 from rply import ParserGenerator
 
-import src.AST as AST
-import src.val_types as val_types
+import stl.AST as AST
+import stl.val_types as val_types
 
-from src.lexer import Lexer
+from stl.lexer import Lexer
 from sys import argv
-from src.tools import Tools
+from stl.tools import Tools
 import os
-import src.exceptions as exceptions
+import stl.exceptions as exceptions
 
 class Eval_Context:
     @staticmethod
@@ -189,7 +189,7 @@ class Parser:
 
         # typed val declaration (type inference)
         @pg.production("stmt : VAL_DECL val EQUAL expr separator")
-        def untyped_var_decl_stmt(s):
+        def untyped_val_decl_stmt(s):
             return AST.Val_Decl_Stmt(s[0].gettokentype(), s[1], None, s[3])
 
     
@@ -208,7 +208,7 @@ class Parser:
 
         # typed var declaration
         @pg.production("stmt : VAR_DECL val COLON type_expr EQUAL expr separator")
-        def typed_val_decl_stmt(s):
+        def typed_var_decl_stmt(s):
             return AST.Var_Decl_Stmt(s[0].gettokentype(), s[1], s[3], s[5])
 
         # assignment statement (non-declaration style)
@@ -237,7 +237,7 @@ class Parser:
             return AST.Id_Val(s[0].getstr())
 
         @pg.production("val : META_IDENTIFIER")
-        def var_expr(s):
+        def meta_var_expr(s):
             return AST.Meta_Id_Val(s[0].getstr())
 
         @pg.production("expr : L_PAREN expr R_PAREN")
@@ -279,6 +279,10 @@ class Parser:
             """handles binary logic expressions"""
             return AST.Binary_Arith_Expr(s[1].getstr(), s[1].gettokentype(), s[0], s[2])
 
+        # @pg.production("")
+        # TODO: separate the STL_Expr with the invocation (time, signal)
+        # this is for external API calls
+        
         # G[1, 10](condition)(t, <signal_var>)
         @pg.production("expr : IDENTIFIER L_SQ_BRACE expr COMMA expr R_SQ_BRACE L_PAREN expr R_PAREN L_PAREN expr COMMA val R_PAREN")        
         def unary_STL_expr_1(s):
@@ -292,7 +296,7 @@ class Parser:
                 return AST.F_STL_Expr(op, s[2], s[4], s[7], s[10], s[12])
             else:
                 # Parse_Error
-                raise Parse_Error("STL Operator: " + op + " not recognized.")
+                raise exceptions.Parse_Error("STL Operator: " + op + " not recognized.")
 
             # X need to be handled separately
 
@@ -350,7 +354,7 @@ class Parser:
             return AST.Boolean_Val(s[0].getstr(), s[0].gettokentype())
 
         @pg.production("val : SIGNAL")
-        def boolean_val(s):
+        def signal_val(s):
             """parse Float values"""
             return AST.Signal_Val(s[0].getstr(), None, s[0].gettokentype())
 

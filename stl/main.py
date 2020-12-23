@@ -18,7 +18,7 @@ from termcolor import colored
 import traceback
 
 # import the tools
-from src.tools import Tools
+from stl.tools import Tools
 
 # for command line arguments
 from sys import stdout, argv
@@ -32,10 +32,12 @@ import os
 # for gracefully terminate when Control-C happens
 from signal import signal, SIGINT
 
-from src.lexer import Lexer
-from src.parser import Parser
-import src.AST_Collection.core_AST as AST
+from stl.lexer import Lexer
+from stl.parser import Parser
+import stl.AST_Collection.core_AST as AST
 # import src.parser as parser
+
+from typing import Optional
 
 INTERPRETER_VERSION = "1.0.0"
 
@@ -60,7 +62,7 @@ class Interpreter:
         program_file: a string that stores the program to be interpreted
     """
 
-    def __init__(self, program_file=None):
+    def __init__(self, program_file = None) -> None:
         """interpret the program file given"""
         # accept the parameters if it is given
         if program_file != None:
@@ -75,11 +77,11 @@ class Interpreter:
 
 
     @staticmethod
-    def input_arrow():
+    def input_arrow() -> str:
         return colored(">>> ", "green", attrs=["bold"])
 
 
-    def repl(self):
+    def repl(self) -> None:
         """enter REPL (read-eval-print loop)"""
 
         # print header information
@@ -128,7 +130,8 @@ class Interpreter:
                 print(e)
 
     @staticmethod
-    def repl_interpret(prev_repl_list, input_line):
+    def repl_interpret(prev_repl_list, input_line) -> bool:
+        # note that True return indicate success, and False return indicate failure
         """start the REPL interpretation of the program
         
         The way repl_interpret is implemented is as follows
@@ -222,10 +225,11 @@ class Interpreter:
                 # print(e)
                 # return False
 
+        # return false for all the things that are not contained by the try block
         return False
 
     @staticmethod
-    def interpret(raw_program_string):
+    def interpret(raw_program_string) -> None:
         """start the interpretation of the program"""
 
         # print(raw_program_string) # for debugging
@@ -252,7 +256,7 @@ class Interpreter:
         parsed_AST.eval(AST.Eval_Context.get_empty_context())
 
 
-def main():
+def main() -> None:
     """main function that get called when executing the Python program"""
     if len(argv) == 1:
         # 1 command line argument (no additional arguments)

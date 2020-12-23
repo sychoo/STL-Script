@@ -1,3 +1,0 @@
-#!/bin/bash
-#python3 -m src.unit_tests
-python3 -m src.unit_tests_test

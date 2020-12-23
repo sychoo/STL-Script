@@ -4,7 +4,7 @@
 from sys import stdout, path
 # path.append("..") # Adds higher directory to python modules path.
 
-from src.tools import Tools
+from stl.tools import Tools
 
 
 class Error(RuntimeError):
@@ -25,4 +25,13 @@ class Invalid_Signal_Error(Error):
     pass
 
 class Parse_Error(Error):
+    pass
+
+class Signal_Not_Added(Error):
+    pass
+
+class Signal_Index_Error(Error):
+    pass
+
+class Signal_Creation_Error(Error):
     pass

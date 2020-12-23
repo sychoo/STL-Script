@@ -2,12 +2,12 @@ from sys import path
 
 # path.append("Type")
 
-from src.Type.core_types import\
+from stl.Type.core_types import\
     Type,\
     Primitive_Type,\
     Custom_Type
 
-from src.Type.primitive_types import\
+from stl.Type.primitive_types import\
     Int_Type,\
     Boolean_Type,\
     Float_Type,\

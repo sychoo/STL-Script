@@ -6,9 +6,9 @@ from sys import stdout, path
 # path.append("..") # Adds higher directory to python modules path.
 
 
-from src.AST_Collection.core_AST import Expr
+from stl.AST_Collection.core_AST import Expr
 
-import src.exceptions as exceptions
+import stl.exceptions as exceptions
 
 class Invocation(Expr):
     """

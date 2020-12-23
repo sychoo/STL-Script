@@ -3,13 +3,13 @@
 # contains core statement of the language
 
 from sys import stdout, path
-path.append("..") # Adds higher directory to python modules path.
+# path.append("..") # Adds higher directory to python modules path.
 
-from src.tools import String_Builder
+from stl.tools import String_Builder
 
-from src.AST_Collection.core_AST import Stmt
-from src.AST_Collection.val import Boolean_Val
-import src.exceptions as exceptions
+from stl.AST_Collection.core_AST import Stmt
+from stl.AST_Collection.val import Boolean_Val
+import stl.exceptions as exceptions
 
 class Block_Stmt(Stmt):
     def __init__(self, stmt_list):

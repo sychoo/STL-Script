@@ -2,12 +2,12 @@
 from sys import stdout, path
 path.append("..") # Adds higher directory to python modules path.
 
-from src.tools import String_Builder
+from stl.tools import String_Builder
 
-from src.AST_Collection.core_AST import Expr
-from src.AST_Collection.val import Boolean_Val
+from stl.AST_Collection.core_AST import Expr
+from stl.AST_Collection.val import Boolean_Val
 
-import src.exceptions as exceptions
+import stl.exceptions as exceptions
 
 class Unary_Expr(Expr):
     """super class for binary expressions"""

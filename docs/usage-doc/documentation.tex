@@ -1,11 +1,19 @@
 \documentclass[titlepage]{article}
 % \usepackage{fullpage}
-\usepackage[margin=1.25in]{geometry}
+
+\usepackage[margin=1.25in]{geometry} % adjust the margin of the document
 % \usepackage{letterpaper, landscape, margin=2in}
+
 \usepackage{color,soul}
-\usepackage{graphicx, graphics}
+\usepackage{textcomp} % for displaying > <
+% for changing color within verbatim
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+
+\usepackage{graphicx, graphics} % for inserting images
 \usepackage{enumitem}
 \usepackage{enumerate}
+\usepackage{todonotes} % for inserting todo items using \todo tag
 
 \begin{document}
 
@@ -22,7 +30,10 @@
 
 \section{Motivation}
 
-\noindent{Signal temporal logic (STL) is a temporal logic formalism for specifying properties of continuous signals. It is widely used for analyzing programs in cyber-physical systems (CPS) that interact with physical entities exhibiting continous dynamics.}
+\noindent{Signal temporal logic (STL) is a temporal logic formalism for
+specifying properties of continuous signals. It is widely used for analyzing
+programs in cyber-physical systems (CPS) that interact with physical entities
+exhibiting continous dynamics.}
 \medskip
 
 \noindent{However, neither the industry nor academia has agreed upon a common
@@ -51,9 +62,102 @@ the following sections.}
     println "Hello, World!"
 \end{verbatim}
 
-\noindent{\texttt{println} is a built-in function in STL Script. It will print whatever expression is behind and append a \verb|\n| character at the end of the expression to create a newline afterwards. \texttt{"Hello, World!"} is a string, which is one of the primitive types in the language.}
+\noindent{\texttt{println} is a built-in function in STL Script. It will print
+whatever expression is behind and append a \verb|\n| character at the end of the
+expression to create a newline afterwards. \texttt{"Hello, World!"} is a string,
+which is one of the primitive types in the language.}
+
+
+\section{Usage}
+
+\subsection{Standalone Program}
+
+\noindent{User can specify a standalone program in a file with suffix
+\texttt{.stl}. For example, the following program is specified in a file called
+\texttt{hello.stl}.}
+
+\begin{verbatim}
+    // hello.stl
+    println "Hello, World!"
+\end{verbatim}
+
+\noindent{To run the program, user can execute the following command on the
+command line (note that \texttt{\$} is not part of the command, it indicates
+that the command must be executed on a shell).}
+
+\begin{verbatim}
+    $ stl hello.stl
+\end{verbatim}
+
+\noindent{The user will then obtain the following result from the command line.}
+
+\begin{verbatim}
+    Hello, World!
+\end{verbatim}
+\subsection{REPL}
+
+\noindent{To start REPL (read-eval-print loop), execute \texttt{stl} command on
+the command line like follows.}
+
+\begin{verbatim}
+    $ stl
+\end{verbatim}
+
+\noindent{Once the command is executed, you will see the following interface.}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    STL Script v1.0.0
+    Copyright © 2020 Carnegie Mellon University. All rights reserved.
+    \textcolor{green}{\textbf{>>>}} |
+\end{Verbatim}
+
+\noindent{From this point on, you are allowed to type and evaluate expressions
+and statements in the STL Script. Note that the vertical bar \texttt{"|"} indicates
+the location of the curser. We can print \texttt{"Hello, World!"} by typing
+\texttt{println "Hello, World"} in the REPL interface as follows. The result of
+execution will be displayed in the subsequent line, followed by \textbf{$>>>$},
+where you are supply more STL expressions or statements.}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    \textcolor{green}{\textbf{>>>}} println "Hello, World!"
+    Hello, World!
+    \textcolor{green}{\textbf{>>>}} |
+\end{Verbatim}
+
+\subsection{API (in progress)}
+
+\begin{verbatim}
+    interally: STL_Spec object: STL specification
+    -----------------
+    G[0, 10]($x > $y)(2, signal)
+    ----------------------------
+    interally: STL_Eval_Expr object: STL evaluation expression
+
+
+    API/internally: evaluated to STL_Eval_Expr
+                    ----------------------------------------
+    stl_eval_expr = STL("G[0, 10]($x > $y)").eval(2, signal)
+                                                     ------
+                                          signal in JSON object format
+    
+    # two way of obtaining robustness -> Float ("+" for satisfy, "-" for violation of the STL property)                   
+    signal_robustness = stl_eval_expr.robustness()
+    signal_robustness = STL("G[0, 10]($x > $y)").robustness(2, signal)
+
+    # two way of obtaining satisfiability -> True/False
+    signal_satisfy = stl_eval_expr.satisfy()
+    signal_satisfy = STL("G[0, 10]($x > $y)").satisfy(2, signal)
+
+    # two way of obtaining probability of a signal satisfying the condition -> Float (between 0 - 1)
+    signal_prob_eval_expr = STL("P[0, 10]($x > $y)")
+    signal_robustness = stl_prob_eval_expr.probability()
+    signal_robustness = STL("P[0, 10]($x > $y)").probability(2, signal)
+
+\end{verbatim}
+
 
 \section{Preliminaries}
+
 
 \subsection{Primitive Types}
 
@@ -66,6 +170,9 @@ the following sections.}
     \item List
     \item Tuple
     \item STL
+    \item STL\_Expr: Specify STL Formulas
+    \item Signal: (add time(stamp) as a signal entryHell)
+    % \item STL_E
 \end{itemize}
 
 \noindent{Most of the primitive types are similar to those in programming languages like Scala or Java. Note that \texttt{List} is a parametric type. It can accept another primitive
@@ -112,6 +219,57 @@ and may exhibit side effects. They typically consist of Expressions, and they ar
 \end{verbatim}
 
 \noindent{This will evaluate the STL formula to a \texttt{Boolean} value \texttt{true} or \texttt{false}. The invocation itself is a expression.}
+
+\subsection{Signal}
+
+\noindent{There are two way of specifying a signals in JSON, namely, signal with index, and signal with both index and timestamp.}
+
+\medskip
+
+\noindent{The following is the signal specification with only index. The Signal API will automatically
+use the signal index (in the case below, "0" and "1", respectively) as the timestamp of each signal content.
+Note that the index of the signal must start with "0" instead of "1". The index must be of \texttt{string} type.}
+\begin{verbatim}
+    {
+        "0" : {
+            "content" : {
+                    "param" : 7
+            }
+        },
+
+        "1" : {
+            "content" : {
+                    "param" : 10
+            }
+        },
+
+        ...
+    }
+\end{verbatim}
+
+\noindent{The following signal is equivalent to the signal above.}
+
+\begin{verbatim}
+    {
+        "0" : {
+            "content" : {
+                    "timestamp" : 0.0,
+                    "param" : 7
+            }
+        },
+    
+        "1" : {
+            "content" : {
+                    "timestamp" : 1.0,
+                    "param" : 10
+            }
+        },
+    
+        ...
+    }
+\end{verbatim}
+
+\noindent{Note that when quantifiing signals using STL formulas, it will first look at if "timestamp" field exists in the signal (quantifiable), then using the index to quantify}
 
 \section{STL Specification}
 

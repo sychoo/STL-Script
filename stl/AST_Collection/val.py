@@ -2,11 +2,11 @@
 # 2020-11-06 08:00:03
 
 from sys import stdout, path
-path.append("..") # Adds higher directory to python modules path.
+# path.append("..") # Adds higher directory to python modules path.
 
-from src.tools import String_Builder, Tools
-from src.AST_Collection.core_AST import Val
-from src.val_types import List_Type
+from stl.tools import String_Builder, Tools
+from stl.AST_Collection.core_AST import Val
+from stl.val_types import List_Type
 
 # val implementation
 

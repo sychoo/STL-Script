@@ -3,10 +3,10 @@
 from sys import stdout, path
 path.append("..") # Adds higher directory to python modules path.
 
-from src.tools import String_Builder
+from stl.tools import String_Builder
 
-from src.AST_Collection.core_AST import STL_Expr
-from src.AST_Collection.val import Meta_Id_Val
+from stl.AST_Collection.core_AST import STL_Expr
+from stl.AST_Collection.val import Meta_Id_Val
 
 
 

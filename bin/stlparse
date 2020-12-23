@@ -8,9 +8,8 @@ cd $(dirname $0)/../
 
 if [ $# -eq 0 ]; then
     # no command-line arguments, REPL mode
-    python3 -m src.parser
+    python3 -m stl.parser
 else
     # with 1 or more command-line arguments, program mode
-    python3 -m src.parser $exec_dir/$*
+    python3 -m stl.parser $exec_dir/$*
 fi
-

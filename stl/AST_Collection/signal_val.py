@@ -2,9 +2,9 @@
 from sys import stdout, path
 path.append("..") # Adds higher directory to python modules path.
 
-from src.tools import String_Builder
-import src.exceptions as exceptions
-from src.AST_Collection.val import Val
+from stl.tools import String_Builder
+import stl.exceptions as exceptions
+from stl.AST_Collection.val import Val
 import json
 
 # sample simplified signal

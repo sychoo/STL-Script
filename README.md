@@ -3,6 +3,9 @@ A standalone Signal Temporal Logic specification language interpreter that parse
 
 For more information, please read our [**Usage Documentation**](https://github.com/sychoo/STL-Script/tree/master/docs/usage-doc/documentation.pdf)
 
+## References
+- [Python Modules vs. Packages](https://realpython.com/python-modules-packages/)
+
 <!-- TODO: create a motivating example -->
 <!-- 
 ## Definition of STL
